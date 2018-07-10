@@ -34,6 +34,9 @@ handwrite: handwrite.cpp
 ocr: ./OCR/simple.cpp
 	$(CXX) $(CXXFLAGS) ./OCR/simple.cpp `pkg-config --cflags --libs opencv tesseract ` -o ./output/ocr-simple
 
+eigenface: ./eigenface.cpp
+	$(CXX) $(CXXFLAGS) ./eigenface.cpp `pkg-config --cflags --libs opencv` -o ./output/eigenface
+
 .PHONY: clean
 
 clean:
