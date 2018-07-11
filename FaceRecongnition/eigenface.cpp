@@ -10,10 +10,10 @@ static Mat norm_0_255(InputArray _src) {
   Mat dst;
   switch(src.channels()){
     case 1:
-      normalize(_src, dst, 0, 255, NORM_MINMAX, CV_8UC1);
+      normalize(src, dst, 0, 255, NORM_MINMAX, CV_8UC1);
       break;
     case 3:
-      normalize(_src, dst, 0, 255, NORM_MINMAX, CV_8UC3);
+      normalize(src, dst, 0, 255, NORM_MINMAX, CV_8UC3);
       break;
     default:
       src.copyTo(dst);
@@ -46,13 +46,15 @@ int main(int argc, char* argv[]) {
     std::cout <<"usage: "<<argv[0]<<" <csv.ext> <output_folder> "<<std::endl;
     exit(EXIT_FAILURE);
   }
+
   string output_folder = ".";
   if (argc == 3) {
     output_folder = argv[2];
   }
-  string fn_csv = string(argv[1]);
+
   vector<Mat> images;
   vector<int> labels;
+  string fn_csv = string(argv[1]);
   try {
     read_csv(fn_csv, images, labels);
   } catch (Exception& e) {
@@ -63,17 +65,22 @@ int main(int argc, char* argv[]) {
       string error_msg = "This demo needs at least 2 images to work. Please add more images to your data set!";
       CV_Error(CV_StsError, error_msg);
   }
+
+  // trainning data and test data
   int height = images[0].rows;
   Mat testSample = images[images.size() - 1];
   int testLabel = labels[labels.size() - 1];
   images.pop_back();
   labels.pop_back();
+
   Ptr<FaceRecognizer> model = createEigenFaceRecognizer();
-  std::cout<<testLabel<<std::endl;
   model->train(images, labels);
+
   int predictedLabel = model->predict(testSample);
   string result_msg = format("Predicted class = %d /actual class =%d.", predictedLabel, testLabel);
   std::cout<<result_msg<<std::endl;
+
+  // analysis
   Mat eigenvalues = model->getMat("eigenvalues");
   Mat W = model->getMat("eigenvectors");
   Mat mean = model->getMat("mean");
@@ -82,6 +89,8 @@ int main(int argc, char* argv[]) {
   } else {
     imwrite(format("%s/mean.png", output_folder.c_str()), norm_0_255(mean.reshape(1, images[0].rows)));
   }
+
+  std::cout<<
   for (int i = 0; i < min(10, W.cols); i++) {
     string msg = format("Eigenvalue #%d = %.5f", i, eigenvalues.at<double>(i));
     std::cout << msg << std::endl;

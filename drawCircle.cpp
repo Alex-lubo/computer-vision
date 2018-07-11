@@ -24,7 +24,7 @@ void drawCircle(int action, int x, int y, int flags, void *userData)
 
 int main(int argc, char* argv[])
 {
-  source = imread(argv[1], 1);
+  source = imread(argv[1], 0);
   if(source.empty()) {
     printf("failed to load image \n");
     return EXIT_FAILURE;

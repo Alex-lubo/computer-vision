@@ -32,10 +32,10 @@ handwrite: handwrite.cpp
 	$(CXX) $(CXXFLAGS) handwrite.cpp $(LIBS) -o ./output/handwrite
 
 ocr: ./OCR/simple.cpp
-	$(CXX) $(CXXFLAGS) ./OCR/simple.cpp `pkg-config --cflags --libs opencv tesseract ` -o ./output/ocr-simple
+	$(CXX) $(CXXFLAGS) ./OCR/simple.cpp `pkg-config --cflags --libs opencv tesseract ` -o ./OCR/ocr-simple
 
-eigenface: ./eigenface.cpp
-	$(CXX) $(CXXFLAGS) ./eigenface.cpp `pkg-config --cflags --libs opencv` -o ./output/eigenface
+eigenface: ./FaceRecongnition/eigenface.cpp
+	$(CXX) $(CXXFLAGS) ./FaceRecongnition/eigenface.cpp `pkg-config --cflags --libs opencv` -o ././FaceRecongnition/eigenface
 
 .PHONY: clean
 

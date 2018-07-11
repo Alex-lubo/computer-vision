@@ -18,7 +18,7 @@ if __name__ == "__main__":
       for filename in filenames:
         abs_path = "%s/%s" % (dirname, filename)
         labstring = filename.split(".")[0]
-        label = int(labstring[8:])
+        label = int(labstring[7:])
         f.write("%s;%d\n"%(abs_path,label))
   
 
